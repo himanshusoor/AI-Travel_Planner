@@ -1,16 +1,17 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+# 🌍 AI Travel Planner
+A modern, fast, and stunning AI-powered Travel Planner web application built with React and Vite. This application provides a beautifully designed interface for users to generate custom travel itineraries, discover flight and hotel deals, and manage their travel preferences using artificial intelligence.
+## ✨ Features
+- **🎨 Premium UI/UX:** A warm, vibrant "sunset" aesthetic utilizing glassmorphism, responsive design, and smooth animations.
+- **🗺️ Smart Itineraries:** A dynamic, day-by-day vertical accordion itinerary that adapts to your trip duration.
+- **✈️ Flight & Hotel Deals:** Beautiful interactive cards displaying AI-curated flight options and hotel recommendations.
+- **🎛️ Advanced Preferences:** Interactive sliders and toggles for budget tracking, flight class, and travel themes (e.g., Adventure, Relaxation, Culture).
+- **🧳 Smart Packing List:** A built-in checklist to ensure you never forget your essentials.
+- **⚡ Lightning Fast:** Built on top of Vite for instantaneous hot-module replacement and optimized production builds.
+## 🛠️ Tech Stack
+- **Frontend Framework:** React 18
+- **Build Tool:** Vite
+- **Styling:** Custom CSS with CSS Variables & Glassmorphism effects
+- **Icons:** Lucide React
+## 🚀 Getting Started
+### Prerequisites
+Make sure you have [Node.js](https://nodejs.org/) installed on your machine
