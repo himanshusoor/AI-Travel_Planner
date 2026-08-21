@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✈️ AI-Powered Travel Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --primary: #ff5733;
+      --primary-hover: #e04826;
+      --primary-light: rgba(255, 87, 51, 0.1);
+      --primary-gradient: linear-gradient(135deg, #ff5733 0%, #ff8c42 100%);
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
+      --shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.1);
+      --shadow-primary: 0 10px 20px -5px rgba(255, 87, 51, 0.3);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+    }
+
+    .dark-theme {
+      --bg-main: #0b0f19;
+      --bg-card: #151c2c;
+      --bg-subtle: #1a2336;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border-color: #26334d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; min-height: 100vh; padding: 0 1rem 3rem 1rem; }
+    
+    .container { max-width: 1240px; margin: 0 auto; }
+    
+    header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 0; border-bottom: 1px solid var(--border-color); margin-bottom: 1.5rem; }
+    .brand { display: flex; align-items: center; gap: 0.6rem; font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; color: var(--primary); text-decoration: none; }
+    .badge { font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 9999px; background-color: var(--primary-light); color: var(--primary); font-weight: 700; }
+    
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.7rem 1.4rem; border-radius: var(--radius-md); font-weight: 600; font-size: 0.95rem; cursor: pointer; border: 1px solid transparent; transition: all 0.2s ease; outline: none; }
+    .btn-primary { background: var(--primary-gradient); color: white; box-shadow: var(--shadow-primary); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -4px rgba(255, 87, 51, 0.4); }
+    .btn-secondary { background-color: var(--bg-subtle); color: var(--text-main); border: 1px solid var(--border-color); }
+    .btn-outline { background-color: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-lg { padding: 0.9rem 1.8rem; font-size: 1.05rem; }
+
+    .card { background-color: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); padding: 1.5rem; box-shadow: var(--shadow-md); }
+    .hero { text-align: center; padding: 2rem 1.5rem; background: radial-gradient(circle at top center, rgba(255, 87, 51, 0.08) 0%, transparent 70%); margin-bottom: 2rem; }
+    .hero h1 { font-family: var(--font-heading); font-size: 2.3rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .hero p { color: var(--text-muted); font-size: 1.05rem; max-width: 650px; margin: 0 auto; }
+    
+    .banner-highlight { text-align: center; padding: 1rem; background-color: #ffecd1; border-radius: var(--radius-md); margin-top: 1.25rem; color: #7c2d12; border: 1px solid rgba(255, 87, 51, 0.2); }
+    .dark-theme .banner-highlight { background-color: rgba(255, 87, 51, 0.15); color: #ff8c42; }
+
+    .grid { display: grid; grid-template-columns: 1fr 320px; gap: 1.75rem; }
+    @media (max-width: 992px) { .grid { grid-template-columns: 1fr; } }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.2rem; }
+    .form-label { font-weight: 600; font-size: 0.88rem; display: flex; align-items: center; gap: 0.4rem; }
+    .form-control { width: 100%; padding: 0.7rem 0.9rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background-color: var(--bg-main); color: var(--text-main); font-size: 0.95rem; outline: none; }
+    .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255, 87, 51, 0.15); }
+
+    .slider-box { background-color: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 1.2rem; }
+    input[type=range] { width: 100%; height: 6px; accent-color: var(--primary); }
+
+    .flight-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: center; transition: all 0.2s ease; }
+    .flight-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: var(--shadow-lg); }
+    .price { color: #10b981; font-size: 1.4rem; font-weight: 800; margin: 0.4rem 0; }
+
+    .tag { font-size: 0.8rem; padding: 0.3rem 0.6rem; border-radius: 9999px; border: 1px solid var(--border-color); background: var(--bg-subtle); cursor: pointer; display: inline-block; margin: 0.2rem; }
+    .tag.active { background: var(--primary-light); color: var(--primary); border-color: var(--primary); font-weight: 600; }
+
+    .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
+    .modal-content { background: var(--bg-card); border-radius: var(--radius-lg); max-width: 500px; width: 100%; padding: 1.75rem; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); }
+
+    .accordion-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; background: var(--bg-subtle); cursor: pointer; border-radius: var(--radius-sm); margin-bottom: 0.5rem; }
+    .accordion-body { padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <a href="#" class="brand">
+        ✈️ AI Travel Planner
+        <span class="badge">Agno AI 2.0</span>
+      </a>
+      <div style="display: flex; gap: 0.5rem;">
+        <button class="btn btn-outline" onclick="toggleTheme()">🌓 Theme</button>
+        <button class="btn btn-outline" onclick="openModal('apiModal')">🔑 API Keys</button>
+        <button class="btn btn-secondary" onclick="openModal('savedModal')">🔖 Saved Trips</button>
+      </div>
+    </header>
+
+    <section class="card hero">
+      <h1>✈️ AI-Powered Travel Planner</h1>
+      <p>Plan your dream trip with AI! Get personalized recommendations for flights, hotels, and activities.</p>
+      
+      <div class="banner-highlight" id="bannerHighlight">
+        <h3>🌟 Your <span id="bannerTheme">💑 Couple Getaway</span> to <span id="bannerDest">DEL</span> is about to begin! 🌟</h3>
+        <p>Let's find the best flights, stays, and experiences for your unforgettable journey.</p>
+      </div>
+    </section>
+
+    <div class="grid">
+      <main>
+        <div class="card" style="margin-bottom: 1.75rem;">
+          <h3 style="margin-bottom: 1rem;">🌍 Where are you headed?</h3>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div class="form-group">
+              <label class="form-label">🛫 Departure City (IATA Code):</label>
+              <input type="text" id="sourceInput" class="form-control" value="BOM" placeholder="e.g. BOM">
+            </div>
+            <div class="form-group">
+              <label class="form-label">🛬 Destination (IATA Code):</label>
+              <input type="text" id="destInput" class="form-control" value="DEL" placeholder="e.g. DEL">
+            </div>
+          </div>
+
+          <h3 style="margin-bottom: 1rem; margin-top: 1.5rem;">📅 Plan Your Adventure</h3>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Departure Date:</label>
+              <input type="date" id="depDate" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Return Date:</label>
+              <input type="date" id="retDate" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Travel Theme:</label>
+              <select id="themeSelect" class="form-control" onchange="updateBanner()">
+                <option value="💑 Couple Getaway">💑 Couple Getaway</option>
+                <option value="👨‍👩‍👧‍👦 Family Vacation">👨‍👩‍👧‍👦 Family Vacation</option>
+                <option value="🏔️ Adventure Trip">🏔️ Adventure Trip</option>
+                <option value="🧳 Solo Exploration">🧳 Solo Exploration</option>
+                <option value="💎 Luxury Retreat">💎 Luxury Retreat</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="slider-box">
+            <div style="display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 0.4rem;">
+              <span>🕒 Trip Duration (days):</span>
+              <span id="daysVal" style="color: var(--primary);">5 Days</span>
+            </div>
+            <input type="range" id="daysSlider" min="1" max="14" value="5" oninput="document.getElementById('daysVal').innerText = this.value + ' Days'">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">🌍 What activities do you enjoy?</label>
+            <div style="margin-bottom: 0.5rem;">
+              <span class="tag active" onclick="toggleTag(this)">🏖️ Beach</span>
+              <span class="tag active" onclick="toggleTag(this)">🏛️ History</span>
+              <span class="tag" onclick="toggleTag(this)">🍲 Street Food</span>
+              <span class="tag" onclick="toggleTag(this)">🌃 Nightlife</span>
+              <span class="tag" onclick="toggleTag(this)">🥾 Hiking</span>
+            </div>
+            <textarea id="activitiesInput" class="form-control" rows="3">Relaxing on the beach, exploring historical sites</textarea>
+          </div>
+
+          <button class="btn btn-primary btn-lg" style="width: 100%; margin-top: 0.5rem;" onclick="generatePlan()">
+            🚀 Generate Travel Plan
+          </button>
+        </div>
+
+        <div id="resultsSection" style="display: none;">
+          <div class="card" style="margin-bottom: 1.5rem; background: var(--primary-light); border-color: var(--primary);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h3 style="color: var(--primary); font-size: 1.1rem;">✅ Travel plan generated successfully!</h3>
+              <button class="btn btn-primary" onclick="saveCurrentPlan()">🔖 Save Plan</button>
+            </div>
+          </div>
+
+          <h3 style="margin-bottom: 1rem;">✈️ Cheapest Flight Options</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 2rem;" id="flightsGrid"></div>
+
+          <h3 style="margin-bottom: 1rem;">🏨 Recommended Hotels & Dining</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 2rem;" id="hotelsGrid"></div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3>🗺️ Your Personalized Itinerary</h3>
+            <button class="btn btn-secondary" onclick="window.print()">🖨️ Print / PDF</button>
+          </div>
+          <div id="itineraryContainer" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
+        </div>
+      </main>
+
+      <aside>
+        <div class="card">
+          <h3 style="margin-bottom: 1rem;">🌎 Personalize Your Trip</h3>
+          
+          <div class="form-group">
+            <label class="form-label">💰 Budget Preference:</label>
+            <select id="budgetSelect" class="form-control">
+              <option value="Economy">Economy</option>
+              <option value="Standard" selected>Standard</option>
+              <option value="Luxury">Luxury</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">✈️ Flight Class:</label>
+            <select id="flightClassSelect" class="form-control">
+              <option value="Economy" selected>Economy</option>
+              <option value="Business">Business</option>
+              <option value="First Class">First Class</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">🏨 Preferred Hotel Rating:</label>
+            <select id="hotelRatingSelect" class="form-control">
+              <option value="Any">Any Rating</option>
+              <option value="3⭐">3⭐ Comfortable</option>
+              <option value="4⭐" selected>4⭐ Superior</option>
+              <option value="5⭐">5⭐ Luxury</option>
+            </select>
+          </div>
+
+          <hr style="margin: 1.25rem 0; border: none; border-top: 1px solid var(--border-color);">
+
+          <h4 style="margin-bottom: 0.75rem;">🎒 Packing Checklist</h4>
+          <div id="packingList" style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.88rem;">
+            <label><input type="checkbox" checked> 👕 Clothes & Swimwear</label>
+            <label><input type="checkbox" checked> 🩴 Comfortable Footwear</label>
+            <label><input type="checkbox"> 🕶️ Sunglasses & Sunscreen</label>
+            <label><input type="checkbox" checked> 💊 Medications & First-Aid</label>
+          </div>
+
+          <hr style="margin: 1.25rem 0; border: none; border-top: 1px solid var(--border-color);">
+
+          <h4 style="margin-bottom: 0.75rem;">🛂 Travel Essentials</h4>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <button class="btn btn-outline" style="justify-content: flex-start;" onclick="openModal('visaModal')">🛃 Check Visa Requirements</button>
+            <button class="btn btn-outline" style="justify-content: flex-start;" onclick="openModal('currencyModal')">💱 Currency Exchange Rates</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Progress Modal -->
+  <div class="modal-overlay" id="progressModal">
+    <div class="modal-content" style="text-align: center;">
+      <h3 style="color: var(--primary); margin-bottom: 0.5rem;">🚀 AI Agents Working...</h3>
+      <p id="progressMsg" style="color: var(--text-muted); font-size: 0.95rem;">Fetching best flight options...</p>
+    </div>
+  </div>
+
+  <!-- Visa Modal -->
+  <div class="modal-overlay" id="visaModal">
+    <div class="modal-content">
+      <h3>🛃 Visa Requirements Check</h3>
+      <p style="margin: 1rem 0; color: var(--text-muted);">Ensure your passport is valid for at least 6 months. For international trips, check eVisa or visa-on-arrival eligibility prior to departure.</p>
+      <div style="text-align: right;"><button class="btn btn-primary" onclick="closeModal('visaModal')">Close</button></div>
+    </div>
+  </div>
+
+  <!-- Currency Modal -->
+  <div class="modal-overlay" id="currencyModal">
+    <div class="modal-content">
+      <h3>💱 Currency Exchange Rates</h3>
+      <p style="margin: 1rem 0;">1 USD ≈ 83.5 INR | 1 EUR ≈ 90.2 INR | 1 AED ≈ 22.7 INR</p>
+      <div style="text-align: right;"><button class="btn btn-primary" onclick="closeModal('currencyModal')">Close</button></div>
+    </div>
+  </div>
+
+  <!-- API Modal -->
+  <div class="modal-overlay" id="apiModal">
+    <div class="modal-content">
+      <h3>🔑 API Keys Configuration</h3>
+      <div class="form-group" style="margin-top: 1rem;">
+        <label class="form-label">Google Gemini API Key:</label>
+        <input type="password" id="geminiKey" class="form-control" placeholder="AIzaSy...">
+      </div>
+      <div style="text-align: right; gap: 0.5rem; display: flex; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeModal('apiModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="closeModal('apiModal')">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const today = new Date().toISOString().split('T')[0];
+    const ret = new Date(Date.now() + 5*86400000).toISOString().split('T')[0];
+    document.getElementById('depDate').value = today;
+    document.getElementById('retDate').value = ret;
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-theme');
+    }
+
+    function openModal(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    function updateBanner() {
+      document.getElementById('bannerTheme').innerText = document.getElementById('themeSelect').value;
+      document.getElementById('bannerDest').innerText = document.getElementById('destInput').value || 'DEL';
+    }
+
+    function toggleTag(el) {
+      el.classList.toggle('active');
+    }
+
+    function generatePlan() {
+      const src = document.getElementById('sourceInput').value.toUpperCase() || 'BOM';
+      const dst = document.getElementById('destInput').value.toUpperCase() || 'DEL';
+      const days = parseInt(document.getElementById('daysSlider').value);
+
+      openModal('progressModal');
+      document.getElementById('progressMsg').innerText = '✈️ Fetching cheapest flight options...';
+
+      setTimeout(() => {
+        document.getElementById('progressMsg').innerText = '🔍 Researching destination attractions...';
+      }, 700);
+
+      setTimeout(() => {
+        document.getElementById('progressMsg').innerText = '🏨 Locating top stays & restaurants...';
+      }, 1400);
+
+      setTimeout(() => {
+        closeModal('progressModal');
+        renderResults(src, dst, days);
+      }, 2100);
+    }
+
+    function renderResults(src, dst, days) {
+      document.getElementById('resultsSection').style.display = 'block';
+
+      const flights = [
+        { airline: 'IndiGo', price: '₹4,850', duration: '2h 15m', dep: '06:30 AM', arr: '08:45 AM' },
+        { airline: 'Air India', price: '₹5,200', duration: '2h 10m', dep: '10:15 AM', arr: '12:25 PM' },
+        { airline: 'Vistara', price: '₹5,650', duration: '2h 05m', dep: '05:40 PM', arr: '07:45 PM' }
+      ];
+
+      document.getElementById('flightsGrid').innerHTML = flights.map(f => `
+        <div class="flight-card">
+          <h4>✈️ ${f.airline}</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.3rem;">Departure: ${f.dep} | Arrival: ${f.arr}</p>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Duration: ${f.duration}</p>
+          <div class="price">${f.price}</div>
+          <a href="https://www.google.com/travel/flights?q=Flights%20to%20${dst}%20from%20${src}" target="_blank" class="btn btn-primary" style="width: 100%; text-decoration: none; font-size: 0.85rem;">🔗 Book Now</a>
+        </div>
+      `).join('');
+
+      const hotels = [
+        { name: 'Grand Imperial Palace', stars: '5⭐', price: '₹7,500/night', tag: 'Top Luxury Pick' },
+        { name: 'Heritage Boutique Stay', stars: '4⭐', price: '₹4,200/night', tag: 'Cozy & Central' },
+        { name: 'The Urban Suites', stars: '4⭐', price: '₹3,800/night', tag: 'Great Value' }
+      ];
+
+      document.getElementById('hotelsGrid').innerHTML = hotels.map(h => `
+        <div class="card">
+          <span class="badge">${h.stars}</span>
+          <h4 style="margin: 0.4rem 0;">${h.name}</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">${h.tag}</p>
+          <div style="font-weight: 700; color: var(--primary); margin-top: 0.5rem;">${h.price}</div>
+        </div>
+      `).join('');
+
+      let itinHtml = '';
+      for (let i = 1; i <= days; i++) {
+        itinHtml += `
+          <div class="card" style="padding: 0; overflow: hidden;">
+            <div class="accordion-header">
+              <strong style="color: var(--primary);">Day ${i} Overview</strong>
+              <span style="font-size: 0.85rem; color: var(--text-muted);">Est. Expense: ₹3,500</span>
+            </div>
+            <div class="accordion-body">
+              <div>🌅 <strong>Morning:</strong> Arrival & orientation tour around iconic landmarks.</div>
+              <div>☀️ <strong>Afternoon:</strong> Lunch at heritage bistro & guided cultural site visit.</div>
+              <div>🌙 <strong>Evening:</strong> Sunset lounge dinner & evening market walk.</div>
+            </div>
+          </div>
+        `;
+      }
+      document.getElementById('itineraryContainer').innerHTML = itinHtml;
+
+      window.scrollTo({ top: document.getElementById('resultsSection').offsetTop - 20, behavior: 'smooth' });
+    }
+
+    function saveCurrentPlan() {
+      alert('Plan saved successfully to your session!');
+    }
+  </script>
+</body>
+</html>
